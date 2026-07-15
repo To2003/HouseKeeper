@@ -76,7 +76,7 @@ var __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$f
 ;
 ;
 const metadata = {
-    title: 'House Keeper — Tu hogar, ordenado',
+    title: 'Our Home — Tu hogar, ordenado',
     description: 'Gestioná el inventario, la lista de compras, tus recetas y los gastos del hogar. Todo conectado, en tiempo real, con tu familia.',
     generator: 'v0.app'
 };

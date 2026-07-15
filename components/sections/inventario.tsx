@@ -9,13 +9,13 @@ import { Badge } from '@/components/ui/badge'
 import { DynIcon } from '@/components/icon-map'
 import { Sheet, Field, inputCls } from '@/components/ui/sheet'
 import { ItemModal } from '@/components/sections/item-modal'
-import { expiryState, isLowStock, formatExpiry, normalize } from '@/lib/helpers'
+import { expiryState, isLowStock, formatExpiry, normalize, timeAgo } from '@/lib/helpers'
 import { locationIconOptions } from '@/components/icon-map'
 import type { InventoryItem } from '@/lib/types'
 
 export function Inventario(_props: SectionProps) {
   const { locations, inventory, addLocation, members } = useStore()
-  const [activeLoc, setActiveLoc] = useState(locations[0]?.id || '')
+  const [activeLoc, setActiveLoc] = useState('all')
   const [query, setQuery] = useState('')
   const [itemOpen, setItemOpen] = useState(false)
   const [editing, setEditing] = useState<InventoryItem | null>(null)
@@ -28,6 +28,7 @@ export function Inventario(_props: SectionProps) {
       const q = normalize(query)
       return inventory.filter((i) => normalize(i.name).includes(q))
     }
+    if (activeLoc === 'all') return inventory
     return inventory.filter((i) => i.locationId === activeLoc)
   }, [inventory, activeLoc, query, searching])
 
@@ -64,6 +65,17 @@ export function Inventario(_props: SectionProps) {
       {/* Chips de ubicaciones */}
       {!searching && (
         <div className="-mx-4 flex gap-2 overflow-x-auto px-4 no-scrollbar">
+          <button
+            onClick={() => setActiveLoc('all')}
+            className={`flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-semibold transition-colors ${
+              activeLoc === 'all' ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card text-foreground'
+            }`}
+          >
+            Todo
+            <span className={`text-xs ${activeLoc === 'all' ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
+              {inventory.length}
+            </span>
+          </button>
           {locations.map((l) => {
             const active = l.id === activeLoc
             return (
@@ -138,7 +150,7 @@ export function Inventario(_props: SectionProps) {
                     )}
                     {editor && (
                       <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                        <Avatar initials={editor.initials} color={editor.color} size={16} /> {item.updatedAt}
+                        <Avatar initials={editor.initials} color={editor.color} size={16} /> {timeAgo(item.updatedAt)}
                       </span>
                     )}
                   </div>

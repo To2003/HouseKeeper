@@ -13,6 +13,7 @@ import { lastMonthTotal } from '@/lib/mock-data'
 import type { Recurrence, ServiceExpense, ServiceStatus } from '@/lib/types'
 
 const SERVICE_ICONS = ['zap', 'droplet', 'wifi', 'flame', 'phone', 'building', 'cart', 'tv']
+import type { SectionProps } from '@/components/app-shell'
 
 export function Servicios(_props: Partial<SectionProps>) {
   const { services, toggleServiceStatus } = useStore()

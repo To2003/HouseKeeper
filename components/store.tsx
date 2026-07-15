@@ -146,6 +146,25 @@ export function StoreProvider({ children, session }: { children: ReactNode, sess
     }
 
     loadData()
+
+    const channel = supabase
+      .channel('public-schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+        },
+        (payload) => {
+          console.log('Cambio detectado en base de datos:', payload)
+          loadData()
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [session, supabase])
 
   async function logActivity(text: string, section: string, hhId: string) {
@@ -359,7 +378,7 @@ export function StoreProvider({ children, session }: { children: ReactNode, sess
           }).eq('id', recipe.id).select().single()
           
           if (data) {
-            setRecipes(prev => prev.map(r => r.id === data.id ? { ...r, ...data, ingredients: data.ingredients as any, steps: data.steps as any } : r))
+            setRecipes(prev => prev.map(r => r.id === data.id ? { ...r, ...data, photo: data.photo || undefined, ingredients: data.ingredients as any, steps: data.steps as any } : r))
             logActivity(`editó la receta ${data.name}`, 'recetero', hhId)
           }
         } else {

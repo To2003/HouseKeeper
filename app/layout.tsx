@@ -16,7 +16,7 @@ const fraunces = Fraunces({
 })
 
 export const metadata: Metadata = {
-  title: 'House Keeper — Tu hogar, ordenado',
+  title: 'Our Home — Tu hogar, ordenado',
   description:
     'Gestioná el inventario, la lista de compras, tus recetas y los gastos del hogar. Todo conectado, en tiempo real, con tu familia.',
   generator: 'v0.app',

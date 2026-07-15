@@ -43,7 +43,7 @@ function Brand() {
       <span className="grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground">
         <Home className="size-5" strokeWidth={2.5} />
       </span>
-      <span className="font-serif text-xl font-bold tracking-tight">House Keeper</span>
+      <span className="font-serif text-xl font-bold tracking-tight">Our Home</span>
     </div>
   )
 }
@@ -397,7 +397,7 @@ function OnboardingScreen({ onDone, session }: { onDone: () => void, session?: a
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
                 required
-                placeholder="HOGAR-7K3M"
+                placeholder="Ej: 7K3M9P"
                 className={cn(inputCls, 'pl-11 font-mono tracking-widest uppercase')}
               />
             </div>

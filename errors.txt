@@ -1,0 +1,192 @@
+app/page.tsx(24,19): error TS2339: Property 'household_id' does not exist on type 'never'.
+app/page.tsx(35,19): error TS2339: Property 'household_id' does not exist on type 'never'.
+components/app-shell.tsx(35,82): error TS18047: 'household' is possibly 'null'.
+components/auth/auth-flow.tsx(251,7): error TS2353: Object literal may only specify known properties, and 'name' does not exist in type 'never[]'.
+components/auth/auth-flow.tsx(263,7): error TS2353: Object literal may only specify known properties, and 'user_id' does not exist in type 'never[]'.
+components/auth/auth-flow.tsx(264,24): error TS2339: Property 'id' does not exist on type 'never'.
+components/auth/auth-flow.tsx(279,7): error TS2322: Type '{ household_id: any; name: string; icon: string; }' is not assignable to type 'never'.
+components/auth/auth-flow.tsx(279,26): error TS2339: Property 'id' does not exist on type 'never'.
+components/auth/auth-flow.tsx(280,7): error TS2322: Type '{ household_id: any; name: string; icon: string; }' is not assignable to type 'never'.
+components/auth/auth-flow.tsx(280,26): error TS2339: Property 'id' does not exist on type 'never'.
+components/auth/auth-flow.tsx(281,7): error TS2322: Type '{ household_id: any; name: string; icon: string; }' is not assignable to type 'never'.
+components/auth/auth-flow.tsx(281,26): error TS2339: Property 'id' does not exist on type 'never'.
+components/auth/auth-flow.tsx(282,7): error TS2322: Type '{ household_id: any; name: string; icon: string; }' is not assignable to type 'never'.
+components/auth/auth-flow.tsx(282,26): error TS2339: Property 'id' does not exist on type 'never'.
+components/auth/auth-flow.tsx(306,7): error TS2353: Object literal may only specify known properties, and 'user_id' does not exist in type 'never[]'.
+components/auth/auth-flow.tsx(307,24): error TS2339: Property 'id' does not exist on type 'never'.
+components/sections/compras.tsx(16,41): error TS2304: Cannot find name 'SectionProps'.
+components/sections/perfil.tsx(57,87): error TS2322: Type '{ initials: string; color: string; size: number; className: string; }' is not assignable to type 'IntrinsicAttributes & { initials: string; color: string; size?: number | undefined; ring?: boolean | undefined; }'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & { initials: string; color: string; size?: number | undefined; ring?: boolean | undefined; }'.
+components/sections/recetero.tsx(23,42): error TS2304: Cannot find name 'SectionProps'.
+components/sections/recetero.tsx(151,14): error TS2345: Argument of type 'Promise<number>' is not assignable to parameter of type 'SetStateAction<number | null>'.
+components/sections/servicios.tsx(17,43): error TS2304: Cannot find name 'SectionProps'.
+components/store.tsx(79,32): error TS2339: Property 'households' does not exist on type 'never'.
+components/store.tsx(82,21): error TS2339: Property 'user_id' does not exist on type 'never'.
+components/store.tsx(83,23): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(84,27): error TS2339: Property 'initials' does not exist on type 'never'.
+components/store.tsx(85,24): error TS2339: Property 'color' does not exist on type 'never'.
+components/store.tsx(86,25): error TS2339: Property 'online' does not exist on type 'never'.
+components/store.tsx(87,27): error TS2339: Property 'last_name' does not exist on type 'never'.
+components/store.tsx(88,27): error TS2339: Property 'nickname' does not exist on type 'never'.
+components/store.tsx(89,28): error TS2339: Property 'birth_date' does not exist on type 'never'.
+components/store.tsx(92,40): error TS2339: Property 'households' does not exist on type 'never'.
+components/store.tsx(92,62): error TS2339: Property 'households' does not exist on type 'never'.
+components/store.tsx(92,86): error TS2339: Property 'households' does not exist on type 'never'.
+components/store.tsx(119,15): error TS2339: Property 'user_id' does not exist on type 'never'.
+components/store.tsx(119,32): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(119,50): error TS2339: Property 'initials' does not exist on type 'never'.
+components/store.tsx(119,69): error TS2339: Property 'color' does not exist on type 'never'.
+components/store.tsx(119,86): error TS2339: Property 'online' does not exist on type 'never'.
+components/store.tsx(120,21): error TS2339: Property 'last_name' does not exist on type 'never'.
+components/store.tsx(120,57): error TS2339: Property 'nickname' does not exist on type 'never'.
+components/store.tsx(120,93): error TS2339: Property 'birth_date' does not exist on type 'never'.
+components/store.tsx(122,49): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(122,61): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(122,75): error TS2339: Property 'icon' does not exist on type 'never'.
+components/store.tsx(124,15): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(124,27): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(124,52): error TS2339: Property 'quantity' does not exist on type 'never'.
+components/store.tsx(124,71): error TS2339: Property 'unit' does not exist on type 'never'.
+components/store.tsx(125,23): error TS2339: Property 'location_id' does not exist on type 'never'.
+components/store.tsx(125,54): error TS2339: Property 'min_stock' does not exist on type 'never'.
+components/store.tsx(126,19): error TS2339: Property 'expiry' does not exist on type 'never'.
+components/store.tsx(126,49): error TS2339: Property 'photo' does not exist on type 'never'.
+components/store.tsx(127,22): error TS2339: Property 'updated_by' does not exist on type 'never'.
+components/store.tsx(127,53): error TS2339: Property 'updated_at' does not exist on type 'never'.
+components/store.tsx(130,15): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(130,27): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(130,52): error TS2339: Property 'quantity' does not exist on type 'never'.
+components/store.tsx(130,71): error TS2339: Property 'unit' does not exist on type 'never'.
+components/store.tsx(131,20): error TS2339: Property 'urgency' does not exist on type 'never'.
+components/store.tsx(131,50): error TS2339: Property 'bought' does not exist on type 'never'.
+components/store.tsx(131,69): error TS2339: Property 'added_by' does not exist on type 'never'.
+components/store.tsx(131,95): error TS2339: Property 'source' does not exist on type 'never'.
+components/store.tsx(134,15): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(134,27): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(134,42): error TS2339: Property 'photo' does not exist on type 'never'.
+components/store.tsx(134,74): error TS2339: Property 'servings' does not exist on type 'never'.
+components/store.tsx(134,95): error TS2339: Property 'minutes' does not exist on type 'never'.
+components/store.tsx(135,24): error TS2339: Property 'ingredients' does not exist on type 'never'.
+components/store.tsx(135,53): error TS2339: Property 'steps' does not exist on type 'never'.
+components/store.tsx(138,15): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(138,31): error TS2339: Property 'category' does not exist on type 'never'.
+components/store.tsx(138,49): error TS2339: Property 'icon' does not exist on type 'never'.
+components/store.tsx(138,67): error TS2339: Property 'provider' does not exist on type 'never'.
+components/store.tsx(138,94): error TS2339: Property 'amount' does not exist on type 'never'.
+components/store.tsx(139,20): error TS2339: Property 'due_date' does not exist on type 'never'.
+components/store.tsx(139,40): error TS2339: Property 'status' does not exist on type 'never'.
+components/store.tsx(139,69): error TS2339: Property 'recurrence' does not exist on type 'never'.
+components/store.tsx(142,15): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(142,31): error TS2339: Property 'member_id' does not exist on type 'never'.
+components/store.tsx(142,50): error TS2339: Property 'text' does not exist on type 'never'.
+components/store.tsx(142,67): error TS2339: Property 'section' does not exist on type 'never'.
+components/store.tsx(142,96): error TS2339: Property 'timestamp' does not exist on type 'never'.
+components/store.tsx(154,7): error TS2353: Object literal may only specify known properties, and 'household_id' does not exist in type 'never[]'.
+components/store.tsx(162,18): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(162,37): error TS2339: Property 'member_id' does not exist on type 'never'.
+components/store.tsx(162,59): error TS2339: Property 'text' does not exist on type 'never'.
+components/store.tsx(162,79): error TS2339: Property 'section' does not exist on type 'never'.
+components/store.tsx(162,111): error TS2339: Property 'timestamp' does not exist on type 'never'.
+components/store.tsx(176,20): error TS2339: Property 'household_id' does not exist on type 'never'.
+components/store.tsx(198,68): error TS2353: Object literal may only specify known properties, and 'household_id' does not exist in type 'never[]'.
+components/store.tsx(200,53): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(200,68): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(200,85): error TS2339: Property 'icon' does not exist on type 'never'.
+components/store.tsx(201,23): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(211,74): error TS2345: Argument of type '{ name: string | undefined; quantity: number | undefined; unit: Unit | undefined; location_id: string | undefined; min_stock: number | undefined; expiry: string | undefined; updated_by: string; updated_at: string; }' is not assignable to parameter of type 'never'.
+components/store.tsx(223,62): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(224,32): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(224,60): error TS2339: Property 'quantity' does not exist on type 'never'.
+components/store.tsx(224,82): error TS2339: Property 'unit' does not exist on type 'never'.
+components/store.tsx(225,32): error TS2339: Property 'location_id' does not exist on type 'never'.
+components/store.tsx(225,66): error TS2339: Property 'min_stock' does not exist on type 'never'.
+components/store.tsx(226,28): error TS2339: Property 'expiry' does not exist on type 'never'.
+components/store.tsx(226,65): error TS2339: Property 'updated_by' does not exist on type 'never'.
+components/store.tsx(226,99): error TS2339: Property 'updated_at' does not exist on type 'never'.
+components/store.tsx(228,43): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(232,13): error TS2353: Object literal may only specify known properties, and 'household_id' does not exist in type 'never[]'.
+components/store.tsx(244,24): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(244,39): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(244,67): error TS2339: Property 'quantity' does not exist on type 'never'.
+components/store.tsx(244,89): error TS2339: Property 'unit' does not exist on type 'never'.
+components/store.tsx(245,32): error TS2339: Property 'location_id' does not exist on type 'never'.
+components/store.tsx(245,66): error TS2339: Property 'min_stock' does not exist on type 'never'.
+components/store.tsx(246,28): error TS2339: Property 'expiry' does not exist on type 'never'.
+components/store.tsx(246,65): error TS2339: Property 'updated_by' does not exist on type 'never'.
+components/store.tsx(246,99): error TS2339: Property 'updated_at' does not exist on type 'never'.
+components/store.tsx(248,40): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(265,11): error TS2353: Object literal may only specify known properties, and 'household_id' does not exist in type 'never[]'.
+components/store.tsx(276,21): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(276,35): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(276,62): error TS2339: Property 'quantity' does not exist on type 'never'.
+components/store.tsx(276,83): error TS2339: Property 'unit' does not exist on type 'never'.
+components/store.tsx(277,26): error TS2339: Property 'urgency' does not exist on type 'never'.
+components/store.tsx(277,58): error TS2339: Property 'bought' does not exist on type 'never'.
+components/store.tsx(277,79): error TS2339: Property 'added_by' does not exist on type 'never'.
+components/store.tsx(277,107): error TS2339: Property 'source' does not exist on type 'never'.
+components/store.tsx(279,35): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(286,71): error TS2345: Argument of type '{ bought: boolean; }' is not assignable to parameter of type 'never'.
+components/store.tsx(288,80): error TS2339: Property 'bought' does not exist on type 'never'.
+components/store.tsx(293,71): error TS2345: Argument of type '{ urgency: Urgency; }' is not assignable to parameter of type 'never'.
+components/store.tsx(295,81): error TS2339: Property 'urgency' does not exist on type 'never'.
+components/store.tsx(317,79): error TS2345: Argument of type '{ quantity: number; updated_by: string; updated_at: string; }' is not assignable to parameter of type 'never'.
+components/store.tsx(324,61): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(324,95): error TS2339: Property 'quantity' does not exist on type 'never'.
+components/store.tsx(324,121): error TS2339: Property 'updated_at' does not exist on type 'never'.
+components/store.tsx(324,148): error TS2339: Property 'updated_by' does not exist on type 'never'.
+components/store.tsx(325,37): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(329,13): error TS2353: Object literal may only specify known properties, and 'household_id' does not exist in type 'never[]'.
+components/store.tsx(339,23): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(339,37): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(339,64): error TS2339: Property 'quantity' does not exist on type 'never'.
+components/store.tsx(339,85): error TS2339: Property 'unit' does not exist on type 'never'.
+components/store.tsx(340,31): error TS2339: Property 'location_id' does not exist on type 'never'.
+components/store.tsx(340,64): error TS2339: Property 'min_stock' does not exist on type 'never'.
+components/store.tsx(341,27): error TS2339: Property 'expiry' does not exist on type 'never'.
+components/store.tsx(341,63): error TS2339: Property 'updated_by' does not exist on type 'never'.
+components/store.tsx(341,96): error TS2339: Property 'updated_at' does not exist on type 'never'.
+components/store.tsx(343,37): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(353,66): error TS2345: Argument of type '{ name: string | undefined; servings: number | undefined; minutes: number | undefined; ingredients: any; steps: any; }' is not assignable to parameter of type 'never'.
+components/store.tsx(362,60): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(362,73): error TS2698: Spread types may only be created from object types.
+components/store.tsx(362,100): error TS2339: Property 'ingredients' does not exist on type 'never'.
+components/store.tsx(362,132): error TS2339: Property 'steps' does not exist on type 'never'.
+components/store.tsx(363,49): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(367,13): error TS2353: Object literal may only specify known properties, and 'household_id' does not exist in type 'never[]'.
+components/store.tsx(377,24): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(377,39): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(377,60): error TS2339: Property 'servings' does not exist on type 'never'.
+components/store.tsx(377,84): error TS2339: Property 'minutes' does not exist on type 'never'.
+components/store.tsx(378,33): error TS2339: Property 'ingredients' does not exist on type 'never'.
+components/store.tsx(378,65): error TS2339: Property 'steps' does not exist on type 'never'.
+components/store.tsx(380,48): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(396,13): error TS2353: Object literal may only specify known properties, and 'household_id' does not exist in type 'never[]'.
+components/store.tsx(408,24): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(408,39): error TS2339: Property 'name' does not exist on type 'never'.
+components/store.tsx(408,67): error TS2339: Property 'quantity' does not exist on type 'never'.
+components/store.tsx(408,89): error TS2339: Property 'unit' does not exist on type 'never'.
+components/store.tsx(409,29): error TS2339: Property 'urgency' does not exist on type 'never'.
+components/store.tsx(409,62): error TS2339: Property 'bought' does not exist on type 'never'.
+components/store.tsx(409,84): error TS2339: Property 'added_by' does not exist on type 'never'.
+components/store.tsx(409,113): error TS2339: Property 'source' does not exist on type 'never'.
+components/store.tsx(423,67): error TS2345: Argument of type '{ category: string | undefined; icon: string | undefined; provider: string | undefined; amount: number | undefined; due_date: string | undefined; status: ServiceStatus | undefined; recurrence: Recurrence | undefined; }' is not assignable to parameter of type 'never'.
+components/store.tsx(434,61): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(434,74): error TS2698: Spread types may only be created from object types.
+components/store.tsx(434,97): error TS2339: Property 'due_date' does not exist on type 'never'.
+components/store.tsx(434,120): error TS2339: Property 'status' does not exist on type 'never'.
+components/store.tsx(434,152): error TS2339: Property 'recurrence' does not exist on type 'never'.
+components/store.tsx(434,191): error TS2339: Property 'amount' does not exist on type 'never'.
+components/store.tsx(435,55): error TS2339: Property 'category' does not exist on type 'never'.
+components/store.tsx(439,13): error TS2353: Object literal may only specify known properties, and 'household_id' does not exist in type 'never[]'.
+components/store.tsx(451,24): error TS2339: Property 'id' does not exist on type 'never'.
+components/store.tsx(451,43): error TS2339: Property 'category' does not exist on type 'never'.
+components/store.tsx(451,64): error TS2339: Property 'icon' does not exist on type 'never'.
+components/store.tsx(451,85): error TS2339: Property 'provider' does not exist on type 'never'.
+components/store.tsx(451,115): error TS2339: Property 'amount' does not exist on type 'never'.
+components/store.tsx(452,29): error TS2339: Property 'due_date' does not exist on type 'never'.
+components/store.tsx(452,52): error TS2339: Property 'status' does not exist on type 'never'.
+components/store.tsx(452,84): error TS2339: Property 'recurrence' does not exist on type 'never'.
+components/store.tsx(454,52): error TS2339: Property 'category' does not exist on type 'never'.
+components/store.tsx(463,65): error TS2345: Argument of type '{ status: string; }' is not assignable to parameter of type 'never'.
+components/store.tsx(465,80): error TS2339: Property 'status' does not exist on type 'never'.
+components/store.tsx(479,65): error TS2345: Argument of type '{ name: string; last_name: string | null; nickname: string | null; birth_date: string | null; }' is not assignable to parameter of type 'never'.

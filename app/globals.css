@@ -54,41 +54,41 @@
   color-scheme: light;
   --radius: 1rem;
 
-  --background: oklch(0.985 0.008 85);
-  --foreground: oklch(0.26 0.02 55);
-  --card: oklch(1 0.004 90);
-  --card-foreground: oklch(0.26 0.02 55);
-  --popover: oklch(1 0.004 90);
-  --popover-foreground: oklch(0.26 0.02 55);
+  --background: oklch(0.975 0.005 85);
+  --foreground: oklch(0.3 0.02 55);
+  --card: oklch(0.99 0.002 90);
+  --card-foreground: oklch(0.3 0.02 55);
+  --popover: oklch(0.99 0.002 90);
+  --popover-foreground: oklch(0.3 0.02 55);
 
-  --primary: oklch(0.61 0.15 42);
-  --primary-foreground: oklch(0.99 0.01 85);
-  --secondary: oklch(0.94 0.025 75);
-  --secondary-foreground: oklch(0.34 0.03 55);
-  --muted: oklch(0.955 0.012 80);
-  --muted-foreground: oklch(0.53 0.02 60);
-  --accent: oklch(0.92 0.035 65);
-  --accent-foreground: oklch(0.32 0.04 50);
-  --destructive: oklch(0.58 0.19 25);
+  --primary: oklch(0.7 0.1 42);
+  --primary-foreground: oklch(0.98 0.01 42);
+  --secondary: oklch(0.93 0.02 75);
+  --secondary-foreground: oklch(0.35 0.03 55);
+  --muted: oklch(0.94 0.01 80);
+  --muted-foreground: oklch(0.55 0.02 60);
+  --accent: oklch(0.92 0.02 65);
+  --accent-foreground: oklch(0.35 0.04 50);
+  --destructive: oklch(0.65 0.14 25);
 
-  --border: oklch(0.9 0.014 75);
-  --input: oklch(0.9 0.014 75);
-  --ring: oklch(0.61 0.15 42);
+  --border: oklch(0.9 0.01 75);
+  --input: oklch(0.9 0.01 75);
+  --ring: oklch(0.7 0.1 42);
 
-  --success: oklch(0.63 0.13 150);
-  --success-foreground: oklch(0.99 0.01 150);
-  --warning: oklch(0.8 0.14 82);
-  --warning-foreground: oklch(0.32 0.05 70);
-  --danger: oklch(0.58 0.19 25);
+  --success: oklch(0.75 0.1 150);
+  --success-foreground: oklch(0.2 0.05 150);
+  --warning: oklch(0.85 0.1 82);
+  --warning-foreground: oklch(0.35 0.05 70);
+  --danger: oklch(0.65 0.14 25);
   --danger-foreground: oklch(0.99 0.01 25);
-  --info: oklch(0.68 0.16 52);
-  --info-foreground: oklch(0.99 0.01 52);
+  --info: oklch(0.75 0.1 250);
+  --info-foreground: oklch(0.2 0.05 250);
 
-  --chart-1: oklch(0.61 0.15 42);
-  --chart-2: oklch(0.68 0.16 52);
-  --chart-3: oklch(0.8 0.14 82);
-  --chart-4: oklch(0.63 0.13 150);
-  --chart-5: oklch(0.55 0.09 250);
+  --chart-1: oklch(0.7 0.1 42);
+  --chart-2: oklch(0.75 0.1 52);
+  --chart-3: oklch(0.85 0.1 82);
+  --chart-4: oklch(0.75 0.1 150);
+  --chart-5: oklch(0.7 0.08 250);
 }
 
 .dark {

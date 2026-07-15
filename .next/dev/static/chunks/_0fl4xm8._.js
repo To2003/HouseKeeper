@@ -1098,6 +1098,20 @@ function StoreProvider({ children, session }) {
                 setLoading(false);
             }
             loadData();
+            const channel = supabase.channel('public-schema-db-changes').on('postgres_changes', {
+                event: '*',
+                schema: 'public'
+            }, {
+                "StoreProvider.useEffect.channel": (payload)=>{
+                    console.log('Cambio detectado en base de datos:', payload);
+                    loadData();
+                }
+            }["StoreProvider.useEffect.channel"]).subscribe();
+            return ({
+                "StoreProvider.useEffect": ()=>{
+                    supabase.removeChannel(channel);
+                }
+            })["StoreProvider.useEffect"];
         }
     }["StoreProvider.useEffect"], [
         session,
@@ -1414,6 +1428,7 @@ function StoreProvider({ children, session }) {
                                         "StoreProvider.useMemo[value]": (r)=>r.id === data.id ? {
                                                 ...r,
                                                 ...data,
+                                                photo: data.photo || undefined,
                                                 ingredients: data.ingredients,
                                                 steps: data.steps
                                             } : r
@@ -1621,7 +1636,7 @@ function StoreProvider({ children, session }) {
                         className: "size-8 animate-spin text-primary"
                     }, void 0, false, {
                         fileName: "[project]/components/store.tsx",
-                        lineNumber: 495,
+                        lineNumber: 514,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1629,18 +1644,18 @@ function StoreProvider({ children, session }) {
                         children: "Sincronizando hogar..."
                     }, void 0, false, {
                         fileName: "[project]/components/store.tsx",
-                        lineNumber: 496,
+                        lineNumber: 515,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/store.tsx",
-                lineNumber: 494,
+                lineNumber: 513,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/components/store.tsx",
-            lineNumber: 493,
+            lineNumber: 512,
             columnNumber: 7
         }, this);
     }
@@ -1649,7 +1664,7 @@ function StoreProvider({ children, session }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/components/store.tsx",
-        lineNumber: 502,
+        lineNumber: 521,
         columnNumber: 10
     }, this);
 }
@@ -1975,7 +1990,7 @@ function Brand() {
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                 className: "font-serif text-xl font-bold tracking-tight",
-                children: "House Keeper"
+                children: "Our Home"
             }, void 0, false, {
                 fileName: "[project]/components/auth/auth-flow.tsx",
                 lineNumber: 46,
@@ -2740,7 +2755,7 @@ function OnboardingScreen({ onDone, session }) {
                                         value: code,
                                         onChange: (e)=>setCode(e.target.value.toUpperCase()),
                                         required: true,
-                                        placeholder: "HOGAR-7K3M",
+                                        placeholder: "Ej: 7K3M9P",
                                         className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"], 'pl-11 font-mono tracking-widest uppercase')
                                     }, void 0, false, {
                                         fileName: "[project]/components/auth/auth-flow.tsx",
@@ -4037,7 +4052,7 @@ var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.sign
 function Inventario(_props) {
     _s();
     const { locations, inventory, addLocation, members } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$store$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useStore"])();
-    const [activeLoc, setActiveLoc] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(locations[0]?.id || '');
+    const [activeLoc, setActiveLoc] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('all');
     const [query, setQuery] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     const [itemOpen, setItemOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [editing, setEditing] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
@@ -4051,6 +4066,7 @@ function Inventario(_props) {
                     "Inventario.useMemo[visibleItems]": (i)=>(0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$helpers$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["normalize"])(i.name).includes(q)
                 }["Inventario.useMemo[visibleItems]"]);
             }
+            if (activeLoc === 'all') return inventory;
             return inventory.filter({
                 "Inventario.useMemo[visibleItems]": (i)=>i.locationId === activeLoc
             }["Inventario.useMemo[visibleItems]"]);
@@ -4081,7 +4097,7 @@ function Inventario(_props) {
                         children: "Inventario"
                     }, void 0, false, {
                         fileName: "[project]/components/sections/inventario.tsx",
-                        lineNumber: 49,
+                        lineNumber: 50,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4092,13 +4108,13 @@ function Inventario(_props) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/inventario.tsx",
-                        lineNumber: 50,
+                        lineNumber: 51,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/inventario.tsx",
-                lineNumber: 48,
+                lineNumber: 49,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4108,7 +4124,7 @@ function Inventario(_props) {
                         className: "pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground"
                     }, void 0, false, {
                         fileName: "[project]/components/sections/inventario.tsx",
-                        lineNumber: 55,
+                        lineNumber: 56,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4118,18 +4134,37 @@ function Inventario(_props) {
                         className: `${__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"]} pl-11`
                     }, void 0, false, {
                         fileName: "[project]/components/sections/inventario.tsx",
-                        lineNumber: 56,
+                        lineNumber: 57,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/inventario.tsx",
-                lineNumber: 54,
+                lineNumber: 55,
                 columnNumber: 7
             }, this),
             !searching && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "-mx-4 flex gap-2 overflow-x-auto px-4 no-scrollbar",
                 children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>setActiveLoc('all'),
+                        className: `flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-semibold transition-colors ${activeLoc === 'all' ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card text-foreground'}`,
+                        children: [
+                            "Todo",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: `text-xs ${activeLoc === 'all' ? 'text-primary-foreground/70' : 'text-muted-foreground'}`,
+                                children: inventory.length
+                            }, void 0, false, {
+                                fileName: "[project]/components/sections/inventario.tsx",
+                                lineNumber: 75,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/components/sections/inventario.tsx",
+                        lineNumber: 68,
+                        columnNumber: 11
+                    }, this),
                     locations.map((l)=>{
                         const active = l.id === activeLoc;
                         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4141,7 +4176,7 @@ function Inventario(_props) {
                                     className: "size-4"
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/inventario.tsx",
-                                    lineNumber: 77,
+                                    lineNumber: 89,
                                     columnNumber: 17
                                 }, this),
                                 l.name,
@@ -4150,13 +4185,13 @@ function Inventario(_props) {
                                     children: countByLoc(l.id)
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/inventario.tsx",
-                                    lineNumber: 79,
+                                    lineNumber: 91,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, l.id, true, {
                             fileName: "[project]/components/sections/inventario.tsx",
-                            lineNumber: 70,
+                            lineNumber: 82,
                             columnNumber: 15
                         }, this);
                     }),
@@ -4168,20 +4203,20 @@ function Inventario(_props) {
                                 className: "size-4"
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/inventario.tsx",
-                                lineNumber: 89,
+                                lineNumber: 101,
                                 columnNumber: 13
                             }, this),
                             " Nueva ubicación"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/inventario.tsx",
-                        lineNumber: 85,
+                        lineNumber: 97,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/inventario.tsx",
-                lineNumber: 66,
+                lineNumber: 67,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4193,7 +4228,7 @@ function Inventario(_props) {
                             className: "size-8 text-muted-foreground"
                         }, void 0, false, {
                             fileName: "[project]/components/sections/inventario.tsx",
-                            lineNumber: 98,
+                            lineNumber: 110,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4201,7 +4236,7 @@ function Inventario(_props) {
                             children: "Nada por acá"
                         }, void 0, false, {
                             fileName: "[project]/components/sections/inventario.tsx",
-                            lineNumber: 99,
+                            lineNumber: 111,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4209,13 +4244,13 @@ function Inventario(_props) {
                             children: searching ? 'No encontramos ese producto.' : 'Sumá tu primer item con el botón +.'
                         }, void 0, false, {
                             fileName: "[project]/components/sections/inventario.tsx",
-                            lineNumber: 100,
+                            lineNumber: 112,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/sections/inventario.tsx",
-                    lineNumber: 97,
+                    lineNumber: 109,
                     columnNumber: 11
                 }, this) : visibleItems.map((item)=>{
                     const low = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$helpers$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["isLowStock"])(item);
@@ -4232,12 +4267,12 @@ function Inventario(_props) {
                                     className: "size-5"
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/inventario.tsx",
-                                    lineNumber: 113,
+                                    lineNumber: 125,
                                     columnNumber: 19
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/inventario.tsx",
-                                lineNumber: 112,
+                                lineNumber: 124,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4251,12 +4286,12 @@ function Inventario(_props) {
                                             children: item.name
                                         }, void 0, false, {
                                             fileName: "[project]/components/sections/inventario.tsx",
-                                            lineNumber: 117,
+                                            lineNumber: 129,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/inventario.tsx",
-                                        lineNumber: 116,
+                                        lineNumber: 128,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4269,7 +4304,7 @@ function Inventario(_props) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/sections/inventario.tsx",
-                                        lineNumber: 119,
+                                        lineNumber: 131,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4282,14 +4317,14 @@ function Inventario(_props) {
                                                         className: "size-3"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/sections/inventario.tsx",
-                                                        lineNumber: 126,
+                                                        lineNumber: 138,
                                                         columnNumber: 25
                                                     }, this),
                                                     " Stock bajo"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/inventario.tsx",
-                                                lineNumber: 125,
+                                                lineNumber: 137,
                                                 columnNumber: 23
                                             }, this),
                                             exp === 'pronto' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -4299,7 +4334,7 @@ function Inventario(_props) {
                                                         className: "size-3"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/sections/inventario.tsx",
-                                                        lineNumber: 131,
+                                                        lineNumber: 143,
                                                         columnNumber: 25
                                                     }, this),
                                                     " ",
@@ -4307,7 +4342,7 @@ function Inventario(_props) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/inventario.tsx",
-                                                lineNumber: 130,
+                                                lineNumber: 142,
                                                 columnNumber: 23
                                             }, this),
                                             exp === 'vencido' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -4317,14 +4352,14 @@ function Inventario(_props) {
                                                         className: "size-3"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/sections/inventario.tsx",
-                                                        lineNumber: 136,
+                                                        lineNumber: 148,
                                                         columnNumber: 25
                                                     }, this),
                                                     " Vencido"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/inventario.tsx",
-                                                lineNumber: 135,
+                                                lineNumber: 147,
                                                 columnNumber: 23
                                             }, this),
                                             editor && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4336,27 +4371,27 @@ function Inventario(_props) {
                                                         size: 16
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/sections/inventario.tsx",
-                                                        lineNumber: 141,
+                                                        lineNumber: 153,
                                                         columnNumber: 25
                                                     }, this),
                                                     " ",
-                                                    item.updatedAt
+                                                    (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$helpers$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["timeAgo"])(item.updatedAt)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/inventario.tsx",
-                                                lineNumber: 140,
+                                                lineNumber: 152,
                                                 columnNumber: 23
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/sections/inventario.tsx",
-                                        lineNumber: 123,
+                                        lineNumber: 135,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/sections/inventario.tsx",
-                                lineNumber: 115,
+                                lineNumber: 127,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4367,24 +4402,24 @@ function Inventario(_props) {
                                     className: "size-4"
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/inventario.tsx",
-                                    lineNumber: 151,
+                                    lineNumber: 163,
                                     columnNumber: 19
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/inventario.tsx",
-                                lineNumber: 146,
+                                lineNumber: 158,
                                 columnNumber: 17
                             }, this)
                         ]
                     }, item.id, true, {
                         fileName: "[project]/components/sections/inventario.tsx",
-                        lineNumber: 111,
+                        lineNumber: 123,
                         columnNumber: 15
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/components/sections/inventario.tsx",
-                lineNumber: 95,
+                lineNumber: 107,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$primitives$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fab"], {
@@ -4392,7 +4427,7 @@ function Inventario(_props) {
                 label: "Agregar"
             }, void 0, false, {
                 fileName: "[project]/components/sections/inventario.tsx",
-                lineNumber: 159,
+                lineNumber: 171,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$sections$2f$item$2d$modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ItemModal"], {
@@ -4402,7 +4437,7 @@ function Inventario(_props) {
                 defaultLocationId: activeLoc
             }, void 0, false, {
                 fileName: "[project]/components/sections/inventario.tsx",
-                lineNumber: 161,
+                lineNumber: 173,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(NewLocationModal, {
@@ -4414,17 +4449,17 @@ function Inventario(_props) {
                 }
             }, void 0, false, {
                 fileName: "[project]/components/sections/inventario.tsx",
-                lineNumber: 162,
+                lineNumber: 174,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/inventario.tsx",
-        lineNumber: 47,
+        lineNumber: 48,
         columnNumber: 5
     }, this);
 }
-_s(Inventario, "ARyRNYDDsyJexbHzrDQ7JnHzCCA=", false, function() {
+_s(Inventario, "/mLRNL/H8dmErEs7f7rtgGb08zg=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$store$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useStore"]
     ];
@@ -4450,7 +4485,7 @@ function NewLocationModal({ open, onClose, onCreate }) {
             children: "Crear ubicación"
         }, void 0, false, {
             fileName: "[project]/components/sections/inventario.tsx",
-            lineNumber: 189,
+            lineNumber: 201,
             columnNumber: 9
         }, this),
         children: [
@@ -4464,12 +4499,12 @@ function NewLocationModal({ open, onClose, onCreate }) {
                     autoFocus: true
                 }, void 0, false, {
                     fileName: "[project]/components/sections/inventario.tsx",
-                    lineNumber: 203,
+                    lineNumber: 215,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/inventario.tsx",
-                lineNumber: 202,
+                lineNumber: 214,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Field"], {
@@ -4485,30 +4520,30 @@ function NewLocationModal({ open, onClose, onCreate }) {
                                     className: "size-5"
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/inventario.tsx",
-                                    lineNumber: 215,
+                                    lineNumber: 227,
                                     columnNumber: 15
                                 }, this),
                                 o.label
                             ]
                         }, o.key, true, {
                             fileName: "[project]/components/sections/inventario.tsx",
-                            lineNumber: 208,
+                            lineNumber: 220,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/components/sections/inventario.tsx",
-                    lineNumber: 206,
+                    lineNumber: 218,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/inventario.tsx",
-                lineNumber: 205,
+                lineNumber: 217,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/inventario.tsx",
-        lineNumber: 183,
+        lineNumber: 195,
         columnNumber: 5
     }, this);
 }
@@ -4674,7 +4709,7 @@ function Compras(_props) {
                         children: "Compras"
                     }, void 0, false, {
                         fileName: "[project]/components/sections/compras.tsx",
-                        lineNumber: 34,
+                        lineNumber: 35,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4686,13 +4721,13 @@ function Compras(_props) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/compras.tsx",
-                        lineNumber: 35,
+                        lineNumber: 36,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 33,
+                lineNumber: 34,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4707,7 +4742,7 @@ function Compras(_props) {
                                         className: "size-4 text-primary"
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/compras.tsx",
-                                        lineNumber: 44,
+                                        lineNumber: 45,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -4715,13 +4750,13 @@ function Compras(_props) {
                                         children: "Sugerido por tu inventario"
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/compras.tsx",
-                                        lineNumber: 45,
+                                        lineNumber: 46,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/sections/compras.tsx",
-                                lineNumber: 43,
+                                lineNumber: 44,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$primitives$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -4737,7 +4772,7 @@ function Compras(_props) {
                                                         children: it.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/sections/compras.tsx",
-                                                        lineNumber: 51,
+                                                        lineNumber: 52,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4750,13 +4785,13 @@ function Compras(_props) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/sections/compras.tsx",
-                                                        lineNumber: 52,
+                                                        lineNumber: 53,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                lineNumber: 50,
+                                                lineNumber: 51,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -4775,31 +4810,31 @@ function Compras(_props) {
                                                         className: "size-3.5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/sections/compras.tsx",
-                                                        lineNumber: 70,
+                                                        lineNumber: 71,
                                                         columnNumber: 21
                                                     }, this),
                                                     "Agregar"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                lineNumber: 56,
+                                                lineNumber: 57,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, it.id, true, {
                                         fileName: "[project]/components/sections/compras.tsx",
-                                        lineNumber: 49,
+                                        lineNumber: 50,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/compras.tsx",
-                                lineNumber: 47,
+                                lineNumber: 48,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/compras.tsx",
-                        lineNumber: 42,
+                        lineNumber: 43,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -4809,12 +4844,12 @@ function Compras(_props) {
                                 children: "Por comprar"
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/compras.tsx",
-                                lineNumber: 80,
+                                lineNumber: 81,
                                 columnNumber: 11
                             }, this),
                             pending.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(EmptyState, {}, void 0, false, {
                                 fileName: "[project]/components/sections/compras.tsx",
-                                lineNumber: 82,
+                                lineNumber: 83,
                                 columnNumber: 13
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "space-y-2",
@@ -4830,7 +4865,7 @@ function Compras(_props) {
                                                 className: "grid size-7 shrink-0 place-items-center rounded-full border-2 border-muted-foreground/40 transition-colors active:scale-95"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                lineNumber: 90,
+                                                lineNumber: 91,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4841,7 +4876,7 @@ function Compras(_props) {
                                                         children: item.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/sections/compras.tsx",
-                                                        lineNumber: 96,
+                                                        lineNumber: 97,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4855,7 +4890,7 @@ function Compras(_props) {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                                lineNumber: 98,
+                                                                lineNumber: 99,
                                                                 columnNumber: 25
                                                             }, this),
                                                             item.source === 'receta' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4863,7 +4898,7 @@ function Compras(_props) {
                                                                 children: "· de receta"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                                lineNumber: 101,
+                                                                lineNumber: 102,
                                                                 columnNumber: 54
                                                             }, this),
                                                             item.source === 'stock' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4871,19 +4906,19 @@ function Compras(_props) {
                                                                 children: "· bajo stock"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                                lineNumber: 102,
+                                                                lineNumber: 103,
                                                                 columnNumber: 53
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/sections/compras.tsx",
-                                                        lineNumber: 97,
+                                                        lineNumber: 98,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                lineNumber: 95,
+                                                lineNumber: 96,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -4899,12 +4934,12 @@ function Compras(_props) {
                                                         children: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$helpers$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["urgencyConfig"][u].label
                                                     }, u, false, {
                                                         fileName: "[project]/components/sections/compras.tsx",
-                                                        lineNumber: 113,
+                                                        lineNumber: 114,
                                                         columnNumber: 25
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                lineNumber: 105,
+                                                lineNumber: 106,
                                                 columnNumber: 21
                                             }, this),
                                             by && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$primitives$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
@@ -4913,25 +4948,25 @@ function Compras(_props) {
                                                 size: 26
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                lineNumber: 118,
+                                                lineNumber: 119,
                                                 columnNumber: 28
                                             }, this)
                                         ]
                                     }, item.id, true, {
                                         fileName: "[project]/components/sections/compras.tsx",
-                                        lineNumber: 89,
+                                        lineNumber: 90,
                                         columnNumber: 19
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/compras.tsx",
-                                lineNumber: 84,
+                                lineNumber: 85,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/compras.tsx",
-                        lineNumber: 79,
+                        lineNumber: 80,
                         columnNumber: 9
                     }, this),
                     bought.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -4948,7 +4983,7 @@ function Compras(_props) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/sections/compras.tsx",
-                                        lineNumber: 129,
+                                        lineNumber: 130,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4957,13 +4992,13 @@ function Compras(_props) {
                                         children: "Vaciar"
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/compras.tsx",
-                                        lineNumber: 132,
+                                        lineNumber: 133,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/sections/compras.tsx",
-                                lineNumber: 128,
+                                lineNumber: 129,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$primitives$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -4980,12 +5015,12 @@ function Compras(_props) {
                                                     strokeWidth: 3
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/sections/compras.tsx",
-                                                    lineNumber: 144,
+                                                    lineNumber: 145,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                lineNumber: 139,
+                                                lineNumber: 140,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4995,12 +5030,12 @@ function Compras(_props) {
                                                     children: item.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/sections/compras.tsx",
-                                                    lineNumber: 147,
+                                                    lineNumber: 148,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                lineNumber: 146,
+                                                lineNumber: 147,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5009,7 +5044,7 @@ function Compras(_props) {
                                                 children: "Guardar en casa"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                lineNumber: 149,
+                                                lineNumber: 150,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5020,35 +5055,35 @@ function Compras(_props) {
                                                     className: "size-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/sections/compras.tsx",
-                                                    lineNumber: 160,
+                                                    lineNumber: 161,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/compras.tsx",
-                                                lineNumber: 155,
+                                                lineNumber: 156,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, item.id, true, {
                                         fileName: "[project]/components/sections/compras.tsx",
-                                        lineNumber: 138,
+                                        lineNumber: 139,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/compras.tsx",
-                                lineNumber: 136,
+                                lineNumber: 137,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/compras.tsx",
-                        lineNumber: 127,
+                        lineNumber: 128,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 40,
+                lineNumber: 41,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$primitives$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fab"], {
@@ -5056,7 +5091,7 @@ function Compras(_props) {
                 onClick: ()=>setAddOpen(true)
             }, void 0, false, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 169,
+                lineNumber: 170,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AddShoppingModal, {
@@ -5064,7 +5099,7 @@ function Compras(_props) {
                 onClose: ()=>setAddOpen(false)
             }, void 0, false, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 170,
+                lineNumber: 171,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(RestockModal, {
@@ -5072,13 +5107,13 @@ function Compras(_props) {
                 onClose: ()=>setRestockItem(null)
             }, void 0, false, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 171,
+                lineNumber: 172,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/compras.tsx",
-        lineNumber: 32,
+        lineNumber: 33,
         columnNumber: 5
     }, this);
 }
@@ -5099,12 +5134,12 @@ function EmptyState() {
                     className: "size-6"
                 }, void 0, false, {
                     fileName: "[project]/components/sections/compras.tsx",
-                    lineNumber: 180,
+                    lineNumber: 181,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 179,
+                lineNumber: 180,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5112,7 +5147,7 @@ function EmptyState() {
                 children: "La lista está vacía"
             }, void 0, false, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 182,
+                lineNumber: 183,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5120,13 +5155,13 @@ function EmptyState() {
                 children: "Agregá cosas a mano o desde las sugerencias de tu inventario."
             }, void 0, false, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 183,
+                lineNumber: 184,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/compras.tsx",
-        lineNumber: 178,
+        lineNumber: 179,
         columnNumber: 5
     }, this);
 }
@@ -5165,7 +5200,7 @@ function AddShoppingModal({ open, onClose }) {
             children: "Agregar"
         }, void 0, false, {
             fileName: "[project]/components/sections/compras.tsx",
-            lineNumber: 213,
+            lineNumber: 214,
             columnNumber: 9
         }, this),
         children: [
@@ -5182,12 +5217,12 @@ function AddShoppingModal({ open, onClose }) {
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"]
                 }, void 0, false, {
                     fileName: "[project]/components/sections/compras.tsx",
-                    lineNumber: 219,
+                    lineNumber: 220,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 218,
+                lineNumber: 219,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5203,12 +5238,12 @@ function AddShoppingModal({ open, onClose }) {
                             className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"]
                         }, void 0, false, {
                             fileName: "[project]/components/sections/compras.tsx",
-                            lineNumber: 232,
+                            lineNumber: 233,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/sections/compras.tsx",
-                        lineNumber: 231,
+                        lineNumber: 232,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Field"], {
@@ -5222,23 +5257,23 @@ function AddShoppingModal({ open, onClose }) {
                                     children: u
                                 }, u, false, {
                                     fileName: "[project]/components/sections/compras.tsx",
-                                    lineNumber: 243,
+                                    lineNumber: 244,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/components/sections/compras.tsx",
-                            lineNumber: 241,
+                            lineNumber: 242,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/sections/compras.tsx",
-                        lineNumber: 240,
+                        lineNumber: 241,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 230,
+                lineNumber: 231,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Field"], {
@@ -5257,24 +5292,24 @@ function AddShoppingModal({ open, onClose }) {
                             children: cfg.label
                         }, u, false, {
                             fileName: "[project]/components/sections/compras.tsx",
-                            lineNumber: 256,
+                            lineNumber: 257,
                             columnNumber: 15
                         }, this);
                     })
                 }, void 0, false, {
                     fileName: "[project]/components/sections/compras.tsx",
-                    lineNumber: 251,
+                    lineNumber: 252,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 250,
+                lineNumber: 251,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/compras.tsx",
-        lineNumber: 208,
+        lineNumber: 209,
         columnNumber: 5
     }, this);
 }
@@ -5312,7 +5347,7 @@ function RestockModal({ item, onClose }) {
             children: "Guardar en el inventario"
         }, void 0, false, {
             fileName: "[project]/components/sections/compras.tsx",
-            lineNumber: 294,
+            lineNumber: 295,
             columnNumber: 9
         }, this),
         children: [
@@ -5327,12 +5362,12 @@ function RestockModal({ item, onClose }) {
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/sections/compras.tsx",
-                    lineNumber: 300,
+                    lineNumber: 301,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 299,
+                lineNumber: 300,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Field"], {
@@ -5346,23 +5381,23 @@ function RestockModal({ item, onClose }) {
                             children: l.name
                         }, l.id, false, {
                             fileName: "[project]/components/sections/compras.tsx",
-                            lineNumber: 307,
+                            lineNumber: 308,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/components/sections/compras.tsx",
-                    lineNumber: 305,
+                    lineNumber: 306,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/compras.tsx",
-                lineNumber: 304,
+                lineNumber: 305,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/compras.tsx",
-        lineNumber: 288,
+        lineNumber: 289,
         columnNumber: 5
     }, this);
 }
@@ -5473,7 +5508,7 @@ function Recetero(_props) {
                         children: "Recetero"
                     }, void 0, false, {
                         fileName: "[project]/components/sections/recetero.tsx",
-                        lineNumber: 51,
+                        lineNumber: 52,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5487,13 +5522,13 @@ function Recetero(_props) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/recetero.tsx",
-                        lineNumber: 52,
+                        lineNumber: 53,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 50,
+                lineNumber: 51,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5513,12 +5548,12 @@ function Recetero(_props) {
                     ]
                 }, void 0, false, {
                     fileName: "[project]/components/sections/recetero.tsx",
-                    lineNumber: 58,
+                    lineNumber: 59,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 57,
+                lineNumber: 58,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5543,7 +5578,7 @@ function Recetero(_props) {
                                                 sizes: "100vw"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/recetero.tsx",
-                                                lineNumber: 76,
+                                                lineNumber: 77,
                                                 columnNumber: 21
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "grid h-full place-items-center bg-muted text-muted-foreground",
@@ -5551,12 +5586,12 @@ function Recetero(_props) {
                                                     className: "size-8"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/sections/recetero.tsx",
-                                                    lineNumber: 79,
+                                                    lineNumber: 80,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/recetero.tsx",
-                                                lineNumber: 78,
+                                                lineNumber: 79,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5570,14 +5605,14 @@ function Recetero(_props) {
                                                             strokeWidth: 3
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/sections/recetero.tsx",
-                                                            lineNumber: 85,
+                                                            lineNumber: 86,
                                                             columnNumber: 25
                                                         }, this),
                                                         " La podés hacer"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/sections/recetero.tsx",
-                                                    lineNumber: 84,
+                                                    lineNumber: 85,
                                                     columnNumber: 23
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                                                     tone: "warning",
@@ -5588,18 +5623,18 @@ function Recetero(_props) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/sections/recetero.tsx",
-                                                    lineNumber: 88,
+                                                    lineNumber: 89,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/recetero.tsx",
-                                                lineNumber: 82,
+                                                lineNumber: 83,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/sections/recetero.tsx",
-                                        lineNumber: 74,
+                                        lineNumber: 75,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5610,7 +5645,7 @@ function Recetero(_props) {
                                                 children: recipe.name
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/recetero.tsx",
-                                                lineNumber: 95,
+                                                lineNumber: 96,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5623,7 +5658,7 @@ function Recetero(_props) {
                                                                 className: "size-3.5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/sections/recetero.tsx",
-                                                                lineNumber: 98,
+                                                                lineNumber: 99,
                                                                 columnNumber: 23
                                                             }, this),
                                                             " ",
@@ -5632,7 +5667,7 @@ function Recetero(_props) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/sections/recetero.tsx",
-                                                        lineNumber: 97,
+                                                        lineNumber: 98,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5642,7 +5677,7 @@ function Recetero(_props) {
                                                                 className: "size-3.5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/sections/recetero.tsx",
-                                                                lineNumber: 101,
+                                                                lineNumber: 102,
                                                                 columnNumber: 23
                                                             }, this),
                                                             " ",
@@ -5651,7 +5686,7 @@ function Recetero(_props) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/sections/recetero.tsx",
-                                                        lineNumber: 100,
+                                                        lineNumber: 101,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5661,7 +5696,7 @@ function Recetero(_props) {
                                                                 className: "size-3.5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/sections/recetero.tsx",
-                                                                lineNumber: 104,
+                                                                lineNumber: 105,
                                                                 columnNumber: 23
                                                             }, this),
                                                             " ",
@@ -5671,30 +5706,30 @@ function Recetero(_props) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/sections/recetero.tsx",
-                                                        lineNumber: 103,
+                                                        lineNumber: 104,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/recetero.tsx",
-                                                lineNumber: 96,
+                                                lineNumber: 97,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/sections/recetero.tsx",
-                                        lineNumber: 94,
+                                        lineNumber: 95,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 73,
+                                lineNumber: 74,
                                 columnNumber: 15
                             }, this)
                         }, recipe.id, false, {
                             fileName: "[project]/components/sections/recetero.tsx",
-                            lineNumber: 72,
+                            lineNumber: 73,
                             columnNumber: 13
                         }, this);
                     }),
@@ -5707,12 +5742,12 @@ function Recetero(_props) {
                                     className: "size-6"
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/recetero.tsx",
-                                    lineNumber: 116,
+                                    lineNumber: 117,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 115,
+                                lineNumber: 116,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5720,7 +5755,7 @@ function Recetero(_props) {
                                 children: "No hay recetas cocinables ahora"
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 118,
+                                lineNumber: 119,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5728,19 +5763,19 @@ function Recetero(_props) {
                                 children: "Reponé algunos ingredientes y volvé a mirar."
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 119,
+                                lineNumber: 120,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/recetero.tsx",
-                        lineNumber: 114,
+                        lineNumber: 115,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 68,
+                lineNumber: 69,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$primitives$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fab"], {
@@ -5748,7 +5783,7 @@ function Recetero(_props) {
                 onClick: ()=>setAddOpen(true)
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 126,
+                lineNumber: 127,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(RecipeDetail, {
@@ -5757,7 +5792,7 @@ function Recetero(_props) {
                 statusOf: statusOf
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 127,
+                lineNumber: 128,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AddRecipeModal, {
@@ -5765,13 +5800,13 @@ function Recetero(_props) {
                 onClose: ()=>setAddOpen(false)
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 128,
+                lineNumber: 129,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/recetero.tsx",
-        lineNumber: 49,
+        lineNumber: 50,
         columnNumber: 5
     }, this);
 }
@@ -5787,9 +5822,9 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
     const [added, setAdded] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     if (!recipe) return null;
     const st = statusOf(recipe);
-    function handleAdd() {
+    async function handleAdd() {
         if (!recipe) return;
-        const n = addMissingToShopping(recipe);
+        const n = await addMissingToShopping(recipe);
         setAdded(n);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Sheet"], {
@@ -5811,12 +5846,12 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
                     sizes: "100vw"
                 }, void 0, false, {
                     fileName: "[project]/components/sections/recetero.tsx",
-                    lineNumber: 158,
+                    lineNumber: 159,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 157,
+                lineNumber: 158,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
@@ -5824,7 +5859,7 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
                 children: "Ingredientes"
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 162,
+                lineNumber: 163,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -5841,19 +5876,19 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
                                     strokeWidth: 3
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/recetero.tsx",
-                                    lineNumber: 173,
+                                    lineNumber: 174,
                                     columnNumber: 25
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
                                     className: "size-3",
                                     strokeWidth: 3
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/recetero.tsx",
-                                    lineNumber: 173,
+                                    lineNumber: 174,
                                     columnNumber: 72
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 168,
+                                lineNumber: 169,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5867,19 +5902,19 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 175,
+                                lineNumber: 176,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, i, true, {
                         fileName: "[project]/components/sections/recetero.tsx",
-                        lineNumber: 167,
+                        lineNumber: 168,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 163,
+                lineNumber: 164,
                 columnNumber: 7
             }, this),
             st.missing.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5893,7 +5928,7 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
                             className: "size-4"
                         }, void 0, false, {
                             fileName: "[project]/components/sections/recetero.tsx",
-                            lineNumber: 187,
+                            lineNumber: 188,
                             columnNumber: 15
                         }, this),
                         "Sumar ",
@@ -5902,7 +5937,7 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/sections/recetero.tsx",
-                    lineNumber: 186,
+                    lineNumber: 187,
                     columnNumber: 13
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex items-center justify-center gap-2 rounded-xl bg-[var(--success)]/12 py-2.5 text-sm font-semibold text-[var(--success)]",
@@ -5912,19 +5947,19 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
                             strokeWidth: 3
                         }, void 0, false, {
                             fileName: "[project]/components/sections/recetero.tsx",
-                            lineNumber: 192,
+                            lineNumber: 193,
                             columnNumber: 15
                         }, this),
                         added > 0 ? `${added} sumados a compras` : 'Ya estaban en la lista'
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/sections/recetero.tsx",
-                    lineNumber: 191,
+                    lineNumber: 192,
                     columnNumber: 13
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 184,
+                lineNumber: 185,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
@@ -5932,7 +5967,7 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
                 children: "Preparación"
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 199,
+                lineNumber: 200,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ol", {
@@ -5945,7 +5980,7 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
                                 children: i + 1
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 203,
+                                lineNumber: 204,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5953,24 +5988,24 @@ function RecipeDetail({ recipe, onClose, statusOf }) {
                                 children: step
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 206,
+                                lineNumber: 207,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, i, true, {
                         fileName: "[project]/components/sections/recetero.tsx",
-                        lineNumber: 202,
+                        lineNumber: 203,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 200,
+                lineNumber: 201,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/recetero.tsx",
-        lineNumber: 155,
+        lineNumber: 156,
         columnNumber: 5
     }, this);
 }
@@ -6037,7 +6072,7 @@ function AddRecipeModal({ open, onClose }) {
             children: "Guardar receta"
         }, void 0, false, {
             fileName: "[project]/components/sections/recetero.tsx",
-            lineNumber: 253,
+            lineNumber: 254,
             columnNumber: 9
         }, this),
         children: [
@@ -6051,12 +6086,12 @@ function AddRecipeModal({ open, onClose }) {
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"]
                 }, void 0, false, {
                     fileName: "[project]/components/sections/recetero.tsx",
-                    lineNumber: 259,
+                    lineNumber: 260,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 258,
+                lineNumber: 259,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6072,12 +6107,12 @@ function AddRecipeModal({ open, onClose }) {
                             className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"]
                         }, void 0, false, {
                             fileName: "[project]/components/sections/recetero.tsx",
-                            lineNumber: 263,
+                            lineNumber: 264,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/sections/recetero.tsx",
-                        lineNumber: 262,
+                        lineNumber: 263,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Field"], {
@@ -6090,18 +6125,18 @@ function AddRecipeModal({ open, onClose }) {
                             className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"]
                         }, void 0, false, {
                             fileName: "[project]/components/sections/recetero.tsx",
-                            lineNumber: 266,
+                            lineNumber: 267,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/sections/recetero.tsx",
-                        lineNumber: 265,
+                        lineNumber: 266,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 261,
+                lineNumber: 262,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6115,7 +6150,7 @@ function AddRecipeModal({ open, onClose }) {
                                 children: "Ingredientes"
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 272,
+                                lineNumber: 273,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -6133,20 +6168,20 @@ function AddRecipeModal({ open, onClose }) {
                                         className: "size-3.5"
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/recetero.tsx",
-                                        lineNumber: 277,
+                                        lineNumber: 278,
                                         columnNumber: 13
                                     }, this),
                                     " Agregar"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 273,
+                                lineNumber: 274,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/recetero.tsx",
-                        lineNumber: 271,
+                        lineNumber: 272,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6163,7 +6198,7 @@ function AddRecipeModal({ open, onClose }) {
                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"] + ' flex-1'
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/recetero.tsx",
-                                        lineNumber: 283,
+                                        lineNumber: 284,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -6176,7 +6211,7 @@ function AddRecipeModal({ open, onClose }) {
                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"] + ' w-16'
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/recetero.tsx",
-                                        lineNumber: 289,
+                                        lineNumber: 290,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -6190,29 +6225,29 @@ function AddRecipeModal({ open, onClose }) {
                                                 children: u
                                             }, u, false, {
                                                 fileName: "[project]/components/sections/recetero.tsx",
-                                                lineNumber: 298,
+                                                lineNumber: 299,
                                                 columnNumber: 19
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/recetero.tsx",
-                                        lineNumber: 296,
+                                        lineNumber: 297,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, i, true, {
                                 fileName: "[project]/components/sections/recetero.tsx",
-                                lineNumber: 282,
+                                lineNumber: 283,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/components/sections/recetero.tsx",
-                        lineNumber: 280,
+                        lineNumber: 281,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 270,
+                lineNumber: 271,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Field"], {
@@ -6226,18 +6261,18 @@ function AddRecipeModal({ open, onClose }) {
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"] + ' resize-none'
                 }, void 0, false, {
                     fileName: "[project]/components/sections/recetero.tsx",
-                    lineNumber: 309,
+                    lineNumber: 310,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/recetero.tsx",
-                lineNumber: 308,
+                lineNumber: 309,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/recetero.tsx",
-        lineNumber: 248,
+        lineNumber: 249,
         columnNumber: 5
     }, this);
 }
@@ -6349,7 +6384,7 @@ function Servicios(_props) {
                         children: "Servicios y gastos"
                     }, void 0, false, {
                         fileName: "[project]/components/sections/servicios.tsx",
-                        lineNumber: 42,
+                        lineNumber: 43,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -6357,13 +6392,13 @@ function Servicios(_props) {
                         children: "Julio 2026"
                     }, void 0, false, {
                         fileName: "[project]/components/sections/servicios.tsx",
-                        lineNumber: 43,
+                        lineNumber: 44,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/servicios.tsx",
-                lineNumber: 41,
+                lineNumber: 42,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6379,14 +6414,14 @@ function Servicios(_props) {
                                         className: "size-4"
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/servicios.tsx",
-                                        lineNumber: 50,
+                                        lineNumber: 51,
                                         columnNumber: 13
                                     }, this),
                                     "Total del mes"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/sections/servicios.tsx",
-                                lineNumber: 49,
+                                lineNumber: 50,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -6394,7 +6429,7 @@ function Servicios(_props) {
                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$helpers$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["formatMoney"])(total)
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/servicios.tsx",
-                                lineNumber: 53,
+                                lineNumber: 54,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6407,7 +6442,7 @@ function Servicios(_props) {
                                                 className: "size-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                lineNumber: 57,
+                                                lineNumber: 58,
                                                 columnNumber: 17
                                             }, this),
                                             " +",
@@ -6418,7 +6453,7 @@ function Servicios(_props) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/sections/servicios.tsx",
-                                        lineNumber: 56,
+                                        lineNumber: 57,
                                         columnNumber: 15
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: "flex items-center gap-1 font-semibold text-[var(--success)]",
@@ -6427,7 +6462,7 @@ function Servicios(_props) {
                                                 className: "size-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                lineNumber: 61,
+                                                lineNumber: 62,
                                                 columnNumber: 17
                                             }, this),
                                             " ",
@@ -6438,7 +6473,7 @@ function Servicios(_props) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/sections/servicios.tsx",
-                                        lineNumber: 60,
+                                        lineNumber: 61,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -6446,13 +6481,13 @@ function Servicios(_props) {
                                         children: "vs. junio"
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/servicios.tsx",
-                                        lineNumber: 64,
+                                        lineNumber: 65,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/sections/servicios.tsx",
-                                lineNumber: 54,
+                                lineNumber: 55,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6469,7 +6504,7 @@ function Servicios(_props) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                lineNumber: 69,
+                                                lineNumber: 70,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -6480,13 +6515,13 @@ function Servicios(_props) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                lineNumber: 70,
+                                                lineNumber: 71,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/sections/servicios.tsx",
-                                        lineNumber: 68,
+                                        lineNumber: 69,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6498,24 +6533,24 @@ function Servicios(_props) {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/components/sections/servicios.tsx",
-                                            lineNumber: 73,
+                                            lineNumber: 74,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/servicios.tsx",
-                                        lineNumber: 72,
+                                        lineNumber: 73,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/sections/servicios.tsx",
-                                lineNumber: 67,
+                                lineNumber: 68,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/servicios.tsx",
-                        lineNumber: 48,
+                        lineNumber: 49,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$primitives$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Segmented"], {
@@ -6537,7 +6572,7 @@ function Servicios(_props) {
                         ]
                     }, void 0, false, {
                         fileName: "[project]/components/sections/servicios.tsx",
-                        lineNumber: 78,
+                        lineNumber: 79,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6556,12 +6591,12 @@ function Servicios(_props) {
                                             className: "size-5"
                                         }, void 0, false, {
                                             fileName: "[project]/components/sections/servicios.tsx",
-                                            lineNumber: 100,
+                                            lineNumber: 101,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/sections/servicios.tsx",
-                                        lineNumber: 95,
+                                        lineNumber: 96,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -6573,7 +6608,7 @@ function Servicios(_props) {
                                                 children: svc.category
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                lineNumber: 103,
+                                                lineNumber: 104,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -6587,19 +6622,19 @@ function Servicios(_props) {
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$helpers$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["formatDueDate"])(svc.dueDate)
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/sections/servicios.tsx",
-                                                        lineNumber: 106,
+                                                        lineNumber: 107,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                lineNumber: 104,
+                                                lineNumber: 105,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/sections/servicios.tsx",
-                                        lineNumber: 102,
+                                        lineNumber: 103,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6610,7 +6645,7 @@ function Servicios(_props) {
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$helpers$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["formatMoney"])(svc.amount)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                lineNumber: 112,
+                                                lineNumber: 113,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -6623,7 +6658,7 @@ function Servicios(_props) {
                                                             strokeWidth: 3
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/sections/servicios.tsx",
-                                                            lineNumber: 123,
+                                                            lineNumber: 124,
                                                             columnNumber: 25
                                                         }, this),
                                                         " Pagado"
@@ -6631,25 +6666,25 @@ function Servicios(_props) {
                                                 }, void 0, true) : 'Marcar pago'
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                lineNumber: 113,
+                                                lineNumber: 114,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/sections/servicios.tsx",
-                                        lineNumber: 111,
+                                        lineNumber: 112,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, svc.id, true, {
                                 fileName: "[project]/components/sections/servicios.tsx",
-                                lineNumber: 94,
+                                lineNumber: 95,
                                 columnNumber: 15
                             }, this);
                         })
                     }, void 0, false, {
                         fileName: "[project]/components/sections/servicios.tsx",
-                        lineNumber: 88,
+                        lineNumber: 89,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -6659,7 +6694,7 @@ function Servicios(_props) {
                                 children: "Desglose del mes"
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/servicios.tsx",
-                                lineNumber: 137,
+                                lineNumber: 138,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$primitives$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -6681,14 +6716,14 @@ function Servicios(_props) {
                                                                 className: "size-3.5 text-muted-foreground"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                                lineNumber: 147,
+                                                                lineNumber: 148,
                                                                 columnNumber: 25
                                                             }, this),
                                                             svc.category
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/sections/servicios.tsx",
-                                                        lineNumber: 146,
+                                                        lineNumber: 147,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -6696,13 +6731,13 @@ function Servicios(_props) {
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$helpers$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["formatMoney"])(svc.amount)
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/sections/servicios.tsx",
-                                                        lineNumber: 150,
+                                                        lineNumber: 151,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                lineNumber: 145,
+                                                lineNumber: 146,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6714,36 +6749,36 @@ function Servicios(_props) {
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/sections/servicios.tsx",
-                                                    lineNumber: 153,
+                                                    lineNumber: 154,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/sections/servicios.tsx",
-                                                lineNumber: 152,
+                                                lineNumber: 153,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, svc.id, true, {
                                         fileName: "[project]/components/sections/servicios.tsx",
-                                        lineNumber: 144,
+                                        lineNumber: 145,
                                         columnNumber: 19
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/servicios.tsx",
-                                lineNumber: 138,
+                                lineNumber: 139,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/sections/servicios.tsx",
-                        lineNumber: 136,
+                        lineNumber: 137,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/servicios.tsx",
-                lineNumber: 46,
+                lineNumber: 47,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$primitives$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fab"], {
@@ -6751,7 +6786,7 @@ function Servicios(_props) {
                 onClick: ()=>setAddOpen(true)
             }, void 0, false, {
                 fileName: "[project]/components/sections/servicios.tsx",
-                lineNumber: 162,
+                lineNumber: 163,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ServiceModal, {
@@ -6759,7 +6794,7 @@ function Servicios(_props) {
                 onClose: ()=>setAddOpen(false)
             }, void 0, false, {
                 fileName: "[project]/components/sections/servicios.tsx",
-                lineNumber: 163,
+                lineNumber: 164,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ServiceModal, {
@@ -6768,13 +6803,13 @@ function Servicios(_props) {
                 editing: editing ?? undefined
             }, void 0, false, {
                 fileName: "[project]/components/sections/servicios.tsx",
-                lineNumber: 164,
+                lineNumber: 165,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/servicios.tsx",
-        lineNumber: 40,
+        lineNumber: 41,
         columnNumber: 5
     }, this);
 }
@@ -6836,7 +6871,7 @@ function ServiceModal({ open, onClose, editing }) {
             children: editing ? 'Guardar cambios' : 'Agregar gasto'
         }, void 0, false, {
             fileName: "[project]/components/sections/servicios.tsx",
-            lineNumber: 212,
+            lineNumber: 213,
             columnNumber: 9
         }, this),
         children: [
@@ -6850,12 +6885,12 @@ function ServiceModal({ open, onClose, editing }) {
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"]
                 }, void 0, false, {
                     fileName: "[project]/components/sections/servicios.tsx",
-                    lineNumber: 218,
+                    lineNumber: 219,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/servicios.tsx",
-                lineNumber: 217,
+                lineNumber: 218,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Field"], {
@@ -6867,12 +6902,12 @@ function ServiceModal({ open, onClose, editing }) {
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"]
                 }, void 0, false, {
                     fileName: "[project]/components/sections/servicios.tsx",
-                    lineNumber: 221,
+                    lineNumber: 222,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/servicios.tsx",
-                lineNumber: 220,
+                lineNumber: 221,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6888,12 +6923,12 @@ function ServiceModal({ open, onClose, editing }) {
                             className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"]
                         }, void 0, false, {
                             fileName: "[project]/components/sections/servicios.tsx",
-                            lineNumber: 225,
+                            lineNumber: 226,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/sections/servicios.tsx",
-                        lineNumber: 224,
+                        lineNumber: 225,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Field"], {
@@ -6905,18 +6940,18 @@ function ServiceModal({ open, onClose, editing }) {
                             className: __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["inputCls"]
                         }, void 0, false, {
                             fileName: "[project]/components/sections/servicios.tsx",
-                            lineNumber: 228,
+                            lineNumber: 229,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/sections/servicios.tsx",
-                        lineNumber: 227,
+                        lineNumber: 228,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/servicios.tsx",
-                lineNumber: 223,
+                lineNumber: 224,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Field"], {
@@ -6932,22 +6967,22 @@ function ServiceModal({ open, onClose, editing }) {
                                 className: "size-5"
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/servicios.tsx",
-                                lineNumber: 243,
+                                lineNumber: 244,
                                 columnNumber: 15
                             }, this)
                         }, ic, false, {
                             fileName: "[project]/components/sections/servicios.tsx",
-                            lineNumber: 235,
+                            lineNumber: 236,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/components/sections/servicios.tsx",
-                    lineNumber: 233,
+                    lineNumber: 234,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/sections/servicios.tsx",
-                lineNumber: 232,
+                lineNumber: 233,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6965,7 +7000,7 @@ function ServiceModal({ open, onClose, editing }) {
                                     children: "Pendiente"
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/servicios.tsx",
-                                    lineNumber: 252,
+                                    lineNumber: 253,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -6973,18 +7008,18 @@ function ServiceModal({ open, onClose, editing }) {
                                     children: "Pagado"
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/servicios.tsx",
-                                    lineNumber: 253,
+                                    lineNumber: 254,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/sections/servicios.tsx",
-                            lineNumber: 251,
+                            lineNumber: 252,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/sections/servicios.tsx",
-                        lineNumber: 250,
+                        lineNumber: 251,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Field"], {
@@ -6999,7 +7034,7 @@ function ServiceModal({ open, onClose, editing }) {
                                     children: "Mensual"
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/servicios.tsx",
-                                    lineNumber: 258,
+                                    lineNumber: 259,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -7007,30 +7042,30 @@ function ServiceModal({ open, onClose, editing }) {
                                     children: "Única vez"
                                 }, void 0, false, {
                                     fileName: "[project]/components/sections/servicios.tsx",
-                                    lineNumber: 259,
+                                    lineNumber: 260,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/sections/servicios.tsx",
-                            lineNumber: 257,
+                            lineNumber: 258,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/sections/servicios.tsx",
-                        lineNumber: 256,
+                        lineNumber: 257,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/sections/servicios.tsx",
-                lineNumber: 249,
+                lineNumber: 250,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/sections/servicios.tsx",
-        lineNumber: 207,
+        lineNumber: 208,
         columnNumber: 5
     }, this);
 }
@@ -7074,7 +7109,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 function Perfil({ navigate }) {
     _s();
-    const { currentUser, updateProfile } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$store$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useStore"])();
+    const { currentUser, household, updateProfile } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$store$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useStore"])();
     const [saving, setSaving] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createClient"])();
     const [name, setName] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(currentUser?.name || '');
@@ -7157,8 +7192,7 @@ function Perfil({ navigate }) {
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$primitives$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
                                 initials: currentUser.initials,
                                 color: currentUser.color,
-                                size: 80,
-                                className: "text-3xl"
+                                size: 80
                             }, void 0, false, {
                                 fileName: "[project]/components/sections/perfil.tsx",
                                 lineNumber: 57,
@@ -7298,17 +7332,65 @@ function Perfil({ navigate }) {
                 lineNumber: 68,
                 columnNumber: 7
             }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "mt-2 rounded-2xl border border-border bg-card p-4",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                        className: "font-semibold mb-1",
+                        children: "Código de invitación"
+                    }, void 0, false, {
+                        fileName: "[project]/components/sections/perfil.tsx",
+                        lineNumber: 107,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-sm text-muted-foreground mb-3",
+                        children: [
+                            'Compartí este código para que otros se unan a "',
+                            household?.name,
+                            '".'
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/components/sections/perfil.tsx",
+                        lineNumber: 108,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center justify-between rounded-xl bg-muted px-4 py-3 font-mono text-lg font-bold tracking-widest text-foreground",
+                        children: [
+                            household?.code,
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>navigator.clipboard.writeText(household?.code || ''),
+                                className: "text-xs font-sans font-semibold tracking-normal text-primary hover:underline",
+                                children: "Copiar"
+                            }, void 0, false, {
+                                fileName: "[project]/components/sections/perfil.tsx",
+                                lineNumber: 111,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/components/sections/perfil.tsx",
+                        lineNumber: 109,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/components/sections/perfil.tsx",
+                lineNumber: 106,
+                columnNumber: 7
+            }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                 onClick: handleSave,
                 disabled: saving,
-                className: "mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary font-bold text-primary-foreground transition-all active:scale-[0.98] disabled:opacity-50",
+                className: "mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary font-bold text-primary-foreground transition-all active:scale-[0.98] disabled:opacity-50",
                 children: saving ? 'Guardando...' : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__["Check"], {
                             className: "size-5"
                         }, void 0, false, {
                             fileName: "[project]/components/sections/perfil.tsx",
-                            lineNumber: 111,
+                            lineNumber: 125,
                             columnNumber: 38
                         }, this),
                         " Guardar cambios"
@@ -7316,7 +7398,7 @@ function Perfil({ navigate }) {
                 }, void 0, true)
             }, void 0, false, {
                 fileName: "[project]/components/sections/perfil.tsx",
-                lineNumber: 106,
+                lineNumber: 120,
                 columnNumber: 7
             }, this)
         ]
@@ -7326,7 +7408,7 @@ function Perfil({ navigate }) {
         columnNumber: 5
     }, this);
 }
-_s(Perfil, "GeJaPbQHkHLwQ3z+WBZjcdiCyPA=", false, function() {
+_s(Perfil, "yJyeUTpxsPOl8vhoCLFzhzSul9Q=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$store$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useStore"]
     ];
@@ -7403,7 +7485,7 @@ function AppShell() {
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                                 className: "truncate font-serif text-base font-bold leading-tight",
-                                children: household.name
+                                children: household?.name
                             }, void 0, false, {
                                 fileName: "[project]/components/app-shell.tsx",
                                 lineNumber: 35,

@@ -19,6 +19,7 @@ interface RecipeStatus {
   missing: RecipeIngredient[]
   cookable: boolean
 }
+import type { SectionProps } from '@/components/app-shell'
 
 export function Recetero(_props: Partial<SectionProps>) {
   const { recipes, hasInStock } = useStore()
@@ -145,9 +146,9 @@ function RecipeDetail({
   if (!recipe) return null
   const st = statusOf(recipe)
 
-  function handleAdd() {
+  async function handleAdd() {
     if (!recipe) return
-    const n = addMissingToShopping(recipe)
+    const n = await addMissingToShopping(recipe)
     setAdded(n)
   }
 

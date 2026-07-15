@@ -9,7 +9,7 @@ import { Check, Edit2, LogOut } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 export function Perfil({ navigate }: SectionProps) {
-  const { currentUser, updateProfile } = useStore()
+  const { currentUser, household, updateProfile } = useStore()
   const [saving, setSaving] = useState(false)
   const supabase = createClient()
 
@@ -54,7 +54,7 @@ export function Perfil({ navigate }: SectionProps) {
 
       <Card className="flex flex-col items-center gap-4 p-6 text-center">
         <div className="relative">
-          <Avatar initials={currentUser.initials} color={currentUser.color} size={80} className="text-3xl" />
+          <Avatar initials={currentUser.initials} color={currentUser.color} size={80} />
           <button className="absolute bottom-0 right-0 grid size-8 place-items-center rounded-full border-2 border-background bg-secondary text-secondary-foreground shadow-sm">
             <Edit2 className="size-4" />
           </button>
@@ -103,10 +103,24 @@ export function Perfil({ navigate }: SectionProps) {
         </Field>
       </div>
 
+      <div className="mt-2 rounded-2xl border border-border bg-card p-4">
+        <h3 className="font-semibold mb-1">Código de invitación</h3>
+        <p className="text-sm text-muted-foreground mb-3">Compartí este código para que otros se unan a "{household?.name}".</p>
+        <div className="flex items-center justify-between rounded-xl bg-muted px-4 py-3 font-mono text-lg font-bold tracking-widest text-foreground">
+          {household?.code}
+          <button 
+            onClick={() => navigator.clipboard.writeText(household?.code || '')}
+            className="text-xs font-sans font-semibold tracking-normal text-primary hover:underline"
+          >
+            Copiar
+          </button>
+        </div>
+      </div>
+
       <button
         onClick={handleSave}
         disabled={saving}
-        className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary font-bold text-primary-foreground transition-all active:scale-[0.98] disabled:opacity-50"
+        className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary font-bold text-primary-foreground transition-all active:scale-[0.98] disabled:opacity-50"
       >
         {saving ? 'Guardando...' : <><Check className="size-5" /> Guardar cambios</>}
       </button>

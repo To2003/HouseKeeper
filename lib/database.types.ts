@@ -28,6 +28,7 @@ export interface Database {
           invite_code?: string
           created_at?: string
         }
+        Relationships: any[]
       }
       members: {
         Row: {
@@ -66,6 +67,7 @@ export interface Database {
           nickname?: string | null
           birth_date?: string | null
         }
+        Relationships: any[]
       }
       locations: {
         Row: {
@@ -89,6 +91,7 @@ export interface Database {
           icon?: string
           created_at?: string
         }
+        Relationships: any[]
       }
       inventory_items: {
         Row: {
@@ -130,6 +133,7 @@ export interface Database {
           updated_by?: string | null
           updated_at?: string
         }
+        Relationships: any[]
       }
       shopping_items: {
         Row: {
@@ -168,6 +172,7 @@ export interface Database {
           source?: string
           created_at?: string
         }
+        Relationships: any[]
       }
       recipes: {
         Row: {
@@ -203,6 +208,7 @@ export interface Database {
           steps?: Json
           created_at?: string
         }
+        Relationships: any[]
       }
       services: {
         Row: {
@@ -241,6 +247,7 @@ export interface Database {
           recurrence?: string
           created_at?: string
         }
+        Relationships: any[]
       }
       activities: {
         Row: {
@@ -267,6 +274,7 @@ export interface Database {
           section?: string
           timestamp?: string
         }
+        Relationships: any[]
       }
     }
     Views: {

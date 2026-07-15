@@ -12,6 +12,7 @@ import type { ShoppingItem, Unit, Urgency } from '@/lib/types'
 
 const UNITS: Unit[] = ['unidades', 'kg', 'g', 'l', 'ml', 'paquetes']
 const URGENCIES: Urgency[] = ['urgente', 'alto', 'medio', 'bajo']
+import type { SectionProps } from '@/components/app-shell'
 
 export function Compras(_props: Partial<SectionProps>) {
   const { shopping, members, addShoppingItem, toggleBought, setUrgency, deleteShoppingItem, clearBought } = useStore()

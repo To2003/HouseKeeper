@@ -32,7 +32,7 @@ export function AppShell() {
       <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-border bg-background/90 px-4 py-3 backdrop-blur-md">
         <div className="min-w-0">
           <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Hogar</p>
-          <h1 className="truncate font-serif text-base font-bold leading-tight">{household.name}</h1>
+          <h1 className="truncate font-serif text-base font-bold leading-tight">{household?.name}</h1>
         </div>
         <div className="flex items-center gap-3">
           <button onClick={() => setTab('perfil')} className="flex items-center gap-1.5 rounded-full bg-success/12 py-1 pl-2 pr-2.5 transition-colors hover:bg-success/20">
