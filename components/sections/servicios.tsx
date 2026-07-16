@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Check, Plus, TrendingDown, TrendingUp, Wallet } from 'lucide-react'
+import { Check, Plus, TrendingDown, TrendingUp, Wallet, Trash2 } from 'lucide-react'
 import { useStore } from '@/components/store'
 import { Card, Fab, Segmented } from '@/components/ui/primitives'
 import { Sheet, Field, inputCls } from '@/components/ui/sheet'
@@ -176,7 +176,7 @@ function ServiceModal({
   onClose: () => void
   editing?: ServiceExpense
 }) {
-  const { saveService } = useStore()
+  const { saveService, deleteService } = useStore()
   const [category, setCategory] = useState(editing?.category ?? '')
   const [provider, setProvider] = useState(editing?.provider ?? '')
   const [amount, setAmount] = useState(editing?.amount ?? 0)
@@ -210,9 +210,23 @@ function ServiceModal({
       onClose={onClose}
       title={editing ? 'Editar gasto' : 'Nuevo gasto'}
       footer={
-        <Button className="w-full" size="lg" onClick={submit} disabled={!category.trim()}>
-          {editing ? 'Guardar cambios' : 'Agregar gasto'}
-        </Button>
+        <div className="flex w-full gap-2">
+          {editing && (
+            <Button
+              variant="outline"
+              className="text-destructive border-destructive hover:bg-destructive/10"
+              onClick={() => {
+                deleteService(editing.id)
+                onClose()
+              }}
+            >
+              <Trash2 className="size-5" />
+            </Button>
+          )}
+          <Button className="flex-1" size="lg" onClick={submit} disabled={!category.trim()}>
+            {editing ? 'Guardar cambios' : 'Agregar gasto'}
+          </Button>
+        </div>
       }
     >
       <Field label="Categoría">

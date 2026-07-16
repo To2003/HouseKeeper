@@ -41,9 +41,11 @@ interface StoreValue {
   addToInventoryFromShopping: (data: { name: string; quantity: number; unit: Unit; locationId: string }) => Promise<void>
   // recipes
   saveRecipe: (recipe: Partial<Recipe> & { id?: string }) => Promise<void>
+  deleteRecipe: (id: string) => Promise<void>
   addMissingToShopping: (recipe: Recipe) => Promise<number>
   // services
   saveService: (svc: Partial<ServiceExpense> & { id?: string }) => Promise<void>
+  deleteService: (id: string) => Promise<void>
   toggleServiceStatus: (id: string) => Promise<void>
   // profile
   updateProfile: (data: Partial<Member>) => Promise<void>
@@ -401,6 +403,18 @@ export function StoreProvider({ children, session }: { children: ReactNode, sess
         }
       },
 
+      async deleteRecipe(id) {
+        const hhId = await getHhId()
+        if (!hhId) return
+        
+        const r = recipes.find(r => r.id === id)
+        const { error } = await supabase.from('recipes').delete().eq('id', id)
+        if (!error) {
+          setRecipes(prev => prev.filter(r => r.id !== id))
+          if (r) logActivity(`eliminó la receta ${r.name}`, 'recetero', hhId)
+        }
+      },
+
       async addMissingToShopping(recipe) {
         const hhId = await getHhId()
         if (!hhId) return 0
@@ -472,6 +486,18 @@ export function StoreProvider({ children, session }: { children: ReactNode, sess
             }, ...prev].sort((a,b) => a.dueDate.localeCompare(b.dueDate)))
             logActivity(`agregó el gasto de ${data.category}`, 'servicios', hhId)
           }
+        }
+      },
+
+      async deleteService(id) {
+        const hhId = await getHhId()
+        if (!hhId) return
+        
+        const s = services.find(svc => svc.id === id)
+        const { error } = await supabase.from('services').delete().eq('id', id)
+        if (!error) {
+          setServices(prev => prev.filter(svc => svc.id !== id))
+          if (s) logActivity(`eliminó el gasto de ${s.category}`, 'servicios', hhId)
         }
       },
 

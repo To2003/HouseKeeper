@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Image from 'next/image'
-import { Clock, Users, Check, ShoppingCart, ChefHat, Sparkles, X, Plus } from 'lucide-react'
+import { Clock, Users, Check, ShoppingCart, ChefHat, Sparkles, X, Plus, Pencil, Trash2 } from 'lucide-react'
 import { useStore } from '@/components/store'
 import { Card, Fab } from '@/components/ui/primitives'
 import { Sheet, Field, inputCls } from '@/components/ui/sheet'
@@ -25,6 +25,7 @@ export function Recetero(_props: Partial<SectionProps>) {
   const { recipes, hasInStock } = useStore()
   const [filter, setFilter] = useState<'todas' | 'cocinables'>('todas')
   const [selected, setSelected] = useState<Recipe | null>(null)
+  const [editingRecipe, setEditingRecipe] = useState<Recipe | null>(null)
   const [addOpen, setAddOpen] = useState(false)
 
   const statusOf = useMemo(() => {
@@ -124,9 +125,14 @@ export function Recetero(_props: Partial<SectionProps>) {
         )}
       </div>
 
-      <Fab label="Receta" onClick={() => setAddOpen(true)} />
-      <RecipeDetail recipe={selected} onClose={() => setSelected(null)} statusOf={statusOf} />
-      <AddRecipeModal open={addOpen} onClose={() => setAddOpen(false)} />
+      <Fab label="Receta" onClick={() => { setEditingRecipe(null); setAddOpen(true) }} />
+      <RecipeDetail 
+        recipe={selected} 
+        onClose={() => setSelected(null)} 
+        statusOf={statusOf} 
+        onEdit={(r) => { setSelected(null); setEditingRecipe(r); setAddOpen(true) }} 
+      />
+      <AddRecipeModal open={addOpen} onClose={() => setAddOpen(false)} editing={editingRecipe || undefined} />
     </div>
   )
 }
@@ -135,12 +141,14 @@ function RecipeDetail({
   recipe,
   onClose,
   statusOf,
+  onEdit
 }: {
   recipe: Recipe | null
   onClose: () => void
   statusOf: (r: Recipe) => RecipeStatus
+  onEdit: (r: Recipe) => void
 }) {
-  const { addMissingToShopping, hasInStock } = useStore()
+  const { addMissingToShopping, hasInStock, deleteRecipe } = useStore()
   const [added, setAdded] = useState<number | null>(null)
 
   if (!recipe) return null
@@ -153,7 +161,29 @@ function RecipeDetail({
   }
 
   return (
-    <Sheet open={!!recipe} onClose={() => { setAdded(null); onClose() }} title={recipe.name} description={`${recipe.minutes} min · ${recipe.servings} porciones`}>
+    <Sheet 
+      open={!!recipe} 
+      onClose={() => { setAdded(null); onClose() }} 
+      title={recipe.name} 
+      description={`${recipe.minutes} min · ${recipe.servings} porciones`}
+      footer={
+        <div className="flex w-full gap-2">
+          <Button
+            variant="outline"
+            className="text-destructive border-destructive hover:bg-destructive/10"
+            onClick={() => {
+              deleteRecipe(recipe.id)
+              onClose()
+            }}
+          >
+            <Trash2 className="size-5" />
+          </Button>
+          <Button className="flex-1" variant="outline" onClick={() => onEdit(recipe)}>
+            <Pencil className="size-4 mr-2" /> Editar receta
+          </Button>
+        </div>
+      }
+    >
       {recipe.photo && (
         <div className="relative mb-4 h-40 w-full overflow-hidden rounded-2xl">
           <Image src={recipe.photo || "/placeholder.svg"} alt={recipe.name} fill className="object-cover" sizes="100vw" />
@@ -212,36 +242,38 @@ function RecipeDetail({
   )
 }
 
-function AddRecipeModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+function AddRecipeModal({ open, onClose, editing }: { open: boolean; onClose: () => void; editing?: Recipe }) {
   const { saveRecipe } = useStore()
-  const [name, setName] = useState('')
-  const [servings, setServings] = useState(2)
-  const [minutes, setMinutes] = useState(30)
-  const [ingredients, setIngredients] = useState<RecipeIngredient[]>([{ name: '', quantity: 1, unit: 'unidades' }])
-  const [stepsText, setStepsText] = useState('')
+  const [name, setName] = useState(editing?.name ?? '')
+  const [servings, setServings] = useState(editing?.servings ?? 2)
+  const [minutes, setMinutes] = useState(editing?.minutes ?? 30)
+  const [ingredients, setIngredients] = useState<RecipeIngredient[]>(editing?.ingredients ?? [{ name: '', quantity: 1, unit: 'unidades' }])
+  const [stepsText, setStepsText] = useState(editing?.steps?.join('\n') ?? '')
+
+  useMemo(() => {
+    if (open) {
+      setName(editing?.name ?? '')
+      setServings(editing?.servings ?? 2)
+      setMinutes(editing?.minutes ?? 30)
+      setIngredients(editing?.ingredients ?? [{ name: '', quantity: 1, unit: 'unidades' }])
+      setStepsText(editing?.steps?.join('\n') ?? '')
+    }
+  }, [open, editing])
 
   function updateIng(idx: number, patch: Partial<RecipeIngredient>) {
     setIngredients((prev) => prev.map((ing, i) => (i === idx ? { ...ing, ...patch } : ing)))
   }
 
-  function reset() {
-    setName('')
-    setServings(2)
-    setMinutes(30)
-    setIngredients([{ name: '', quantity: 1, unit: 'unidades' }])
-    setStepsText('')
-  }
-
   function submit() {
     if (!name.trim()) return
     saveRecipe({
+      id: editing?.id,
       name: name.trim(),
       servings,
       minutes,
       ingredients: ingredients.filter((i) => i.name.trim()),
       steps: stepsText.split('\n').map((s) => s.trim()).filter(Boolean),
     })
-    reset()
     onClose()
   }
 
@@ -249,10 +281,10 @@ function AddRecipeModal({ open, onClose }: { open: boolean; onClose: () => void 
     <Sheet
       open={open}
       onClose={onClose}
-      title="Nueva receta"
+      title={editing ? "Editar receta" : "Nueva receta"}
       footer={
         <Button className="w-full" size="lg" onClick={submit} disabled={!name.trim()}>
-          Guardar receta
+          {editing ? "Guardar cambios" : "Guardar receta"}
         </Button>
       }
     >
